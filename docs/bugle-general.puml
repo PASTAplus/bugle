@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor cron
+actor "web-x"
+participant "bugle-scrape"
+participant "bugle-index"
+participant "bugle-search"
+
+autonumber
+cron -> "bugle-scrape"
+"bugle-scrape" -> "web-x"
+"bugle-scrape" -> "bugle-index"
+newpage
+"web-x" -> "bugle-search"
+"bugle-search" --> "web-x"
+
+@enduml
