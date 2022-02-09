@@ -15,8 +15,8 @@
 import daiquiri
 import pytest
 
-from bugle.scrape.config import Config
-from bugle.scrape.page import Page
+from bugle.crawl.config import Config
+from bugle.crawl.page import Page
 
 
 logger = daiquiri.getLogger(__name__)
