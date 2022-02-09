@@ -14,29 +14,32 @@
 """
 import re
 
+import daiquiri
+
 from bugle.scrape.page import Page
 
 
+logger = daiquiri.getLogger(__name__)
+
+
 class Crawler:
-    def __init__(self, host: str, path: str = "/", callback: object = None):
+    def __init__(self, host: str, path: str = "/"):
         self._host = host
         self._path = path
         self._visited = None
-        self._callback = callback
 
     @property
     def visited(self):
         return self._visited
 
-    def crawl(self):
-        self._visited = _crawl(self._host, self._path, allow="^/", callback=self._callback)
+    def crawl(self, allow: str = None, callback: object = None):
+        self._visited = _crawl(self._host, self._path, allow=allow, callback=callback)
 
 
 def _crawl(
         host: str,
         path: str,
         allow: str = "*",
-        deny: str = None,
         visited: list = None,
         callback=None
 ) -> list:
@@ -46,16 +49,18 @@ def _crawl(
 
     url = path if path.startswith("http") else host + path
 
-    page = Page(url)
+    try:
+        page = Page(url)
+        visited.append(path)
 
-    if callback is not None:
-        callback(url=url, host=host, path=path, allow=allow, deny=deny, visited=visited, page=page)
+        if callback:
+            callback(url=url, host=host, path=path, allow=allow, visited=visited, page=page)
 
-    visited.append(path)
-    for link in page.links:
-        if link not in visited:
-            if allow and re.search(allow, link):
-                visited = _crawl(host, link, allow, deny, visited, callback)
-            elif deny and not re.search(deny, link):
-                visited = _crawl(host, link, allow, deny, visited, callback)
+        for link in page.links:
+            if link not in visited:
+                if allow and re.search(allow, link):
+                    visited = _crawl(host, link, allow, visited, callback)
+    except Exception as ex:
+        logger.error(ex)
+
     return visited
