@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 import daiquiri
 import requests
 
-from bugle.scrape.config import Config
+from bugle.crawl.config import Config
 
 logger = daiquiri.getLogger(__name__)
 
