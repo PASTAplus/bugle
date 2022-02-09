@@ -48,13 +48,3 @@ class Page:
         for link in self._soup.find_all("a"):
             links.append(link.get("href"))
         return links
-
-    def text(self, selector: str = None, raw: bool = False) -> str:
-        page_text = ""
-        raw_text = self._soup.get_text()
-        if selector is None:
-            if raw:
-                page_text = raw_text
-            else:
-                page_text = " ".join(raw_text.split())
-        return page_text
