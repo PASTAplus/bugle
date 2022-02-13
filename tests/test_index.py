@@ -13,7 +13,6 @@
     2/12/22
 """
 import json
-import datetime
 
 import daiquiri
 
@@ -33,12 +32,12 @@ def test_load_content():
 
 
 def test_index_webpage():
-    index: Index = load.load_content()
+    index: Index = load.load_content(Config.INDEX_CONTENT_CACHE)
     assert isinstance(index, Index)
 
 
 def test_search_index():
-    index: Index = load.load_content()
+    index: Index = load.load_content(Config.INDEX_CONTENT_CACHE)
     hits = index.search("Environmental")
     assert len(hits) > 0
     hits = index.search("Etiquette")

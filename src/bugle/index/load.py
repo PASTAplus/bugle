@@ -24,8 +24,8 @@ from bugle.index.webpage import WebPage
 logger = daiquiri.getLogger(__name__)
 
 
-def load_content() -> Index:
-    with open(Config.INDEX_CONTENT_CACHE, "r") as f:
+def load_content(path: str) -> Index:
+    with open(path, "r") as f:
         content = json.loads(f.read())
 
     index = Index()

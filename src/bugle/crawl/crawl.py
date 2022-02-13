@@ -36,15 +36,17 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("url", nargs=1, required=True)
+@click.argument("content", nargs=1, required=True)
 @click.argument("selectors", nargs=-1, required=True)
 @click.option("-a", "--allow", default="*", help=allow_help)
 @click.option("-f", "--follow", is_flag=True, default=False, help=follow_help)
-def main(url: str, selectors: tuple, allow: str, follow: bool):
+def main(url: str, content: str, selectors: tuple, allow: str, follow: bool):
     """
         Crawl a website
 
         \b
             URL: URL of website to crawl and index
+            CONTENT: File location of content
             SELECTORS: One or more space separated tags to define index content.
     """
     crawler = Crawler(url=url)
@@ -52,7 +54,7 @@ def main(url: str, selectors: tuple, allow: str, follow: bool):
     logger.info(crawler.visited)
 
     j = json.dumps(crawler.index_content, indent=2)
-    with open(Config.INDEX_CONTENT_CACHE , "w") as f:
+    with open(content, "w") as f:
         f.write(j)
 
     return 0
