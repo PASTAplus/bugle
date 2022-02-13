@@ -131,3 +131,4 @@ dmypy.json
 # Project
 .idea
 config.py
+*.json
