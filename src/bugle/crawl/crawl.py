@@ -19,7 +19,6 @@ import os
 import click
 import daiquiri
 
-from bugle.config import Config
 from bugle.crawl.crawler import Crawler
 
 cwd = os.path.dirname(os.path.realpath(__file__))
