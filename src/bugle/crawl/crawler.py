@@ -13,8 +13,10 @@
     2/6/22
 """
 import re
+from urllib.parse import urlparse
 
 import daiquiri
+from bs4 import BeautifulSoup
 
 from bugle.crawl.page import Page
 
@@ -23,45 +25,46 @@ logger = daiquiri.getLogger(__name__)
 
 
 class Crawler:
-    def __init__(self, host: str):
-        self._host = host
+    def __init__(self, url: str):
+        self._url = url
         self._visited = set()
+        self._url_parse = urlparse(self._url)
+        self._url_prefix = f"{self._url_parse.scheme}://{self._url_parse.netloc}"
+        self._index_content = {}
+
+    @property
+    def index_content(self):
+        return self._index_content
 
     @property
     def visited(self):
         return self._visited
 
-    def crawl(self, path: str, allow: str = None, follow: bool = False, callback: object = None):
-        self._visited = set.union(
-            _crawl(self._host, path, allow=allow, follow=follow, callback=callback, visited=self._visited),
-                   self._visited)
+    def crawl(self, selectors: tuple, url: str = None, allow: str = None, follow: bool = False):
 
+        url = self._url if url is None else url
 
-def _crawl(
-        host: str,
-        path: str,
-        allow: str = "*",
-        follow: bool = False,
-        callback=None,
-        visited: set = None
-) -> set:
+        try:
+            page = Page(url)
+            self._visited.add(url)
 
-    url = path if path.startswith("http") else host + path
+            soup = BeautifulSoup(page.html, "lxml")
 
-    try:
-        page = Page(url)
-        visited.add(path)
+            index_text = ""
+            for selector in selectors:
+                elements = soup.find_all(selector)
+                for element in elements:
+                    index_text += " ".join([_.strip() for _ in element.strings])
 
-        if callback:
-            callback(url=url, host=host, path=path, allow=allow, follow=follow, visited=visited, page=page)
+            self._index_content[page.url] = index_text
+            # logger.info(f"{page.url}: {index_text}")
 
-        if follow:
-            for link in page.links:
-                if link not in visited:
-                    if allow and re.search(allow, link):
-                        visited = _crawl(host, link, allow, follow, callback, visited)
+            if follow:
+                for link in page.links:
+                    url = f"{self._url_prefix}{link}" if not link.startswith(self._url_prefix) else link
+                    if url not in self._visited:
+                        if allow and re.search(allow, link):
+                            self.crawl(selectors, url, allow, follow)
 
-    except Exception as ex:
-        logger.error(ex)
-
-    return visited
+        except Exception as ex:
+            logger.error(ex)
