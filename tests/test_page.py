@@ -15,7 +15,7 @@
 import daiquiri
 import pytest
 
-from bugle.crawl.config import Config
+from bugle.config import Config
 from bugle.crawl.page import Page
 
 
@@ -24,7 +24,7 @@ logger = daiquiri.getLogger(__name__)
 
 @pytest.fixture
 def page():
-    return Page(Config.HOST, Config.PATH)
+    return Page(Config.URL)
 
 
 def test_page_html(page):
@@ -33,8 +33,3 @@ def test_page_html(page):
 
 def test_page_links(page):
     assert isinstance(page.links, list)
-
-
-def test_page_text(page):
-    text = page.text()
-    logger.debug(text)
