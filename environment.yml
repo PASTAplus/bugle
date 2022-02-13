@@ -5,6 +5,7 @@ channels:
 dependencies:
   - _libgcc_mutex=0.1
   - _openmp_mutex=4.5
+  - attrs=21.4.0
   - beautifulsoup4=4.10.0
   - brotlipy=0.7.0
   - bzip2=1.0.8
@@ -17,6 +18,7 @@ dependencies:
   - daiquiri=3.0.0
   - icu=69.1
   - idna=3.3
+  - iniconfig=1.1.1
   - ld_impl_linux-64=2.36.1
   - libffi=3.4.2
   - libgcc-ng=11.2.0
@@ -31,19 +33,26 @@ dependencies:
   - lxml=4.7.1
   - ncurses=6.3
   - openssl=1.1.1l
+  - packaging=21.3
   - pip=22.0.3
+  - pluggy=1.0.0
+  - py=1.11.0
   - pycparser=2.21
   - pyopenssl=22.0.0
+  - pyparsing=3.0.7
   - pysocks=1.7.1
-  - python=3.10.2
+  - pytest=7.0.1
+  - python=3.9.10
   - python-json-logger=2.0.1
-  - python_abi=3.10
+  - python_abi=3.9
   - readline=8.1
   - requests=2.27.1
-  - setuptools=60.7.1
+  - setuptools=60.8.2
+  - snowballstemmer=2.2.0
   - soupsieve=2.3.1
   - sqlite=3.37.0
   - tk=8.6.11
+  - tomli=2.0.1
   - tzdata=2021e
   - urllib3=1.26.8
   - wheel=0.37.1
