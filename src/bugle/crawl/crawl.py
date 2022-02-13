@@ -45,7 +45,7 @@ def main(url: str, content: str, selectors: tuple, allow: str, follow: bool):
 
         \b
             URL: URL of website to crawl and index
-            CONTENT: File location of content
+            CONTENT: File location of where to write crawled content
             SELECTORS: One or more space separated tags to define index content.
     """
     crawler = Crawler(url=url)
