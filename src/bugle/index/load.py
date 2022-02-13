@@ -16,7 +16,6 @@ import json
 
 import daiquiri
 
-from bugle.config import Config
 from bugle.index.index import Index
 from bugle.index.webpage import WebPage
 
