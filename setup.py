@@ -40,7 +40,7 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     python_requires=" >= 3.9.*",
-    install_requires=["click==8.0.3", "daiquiri==3.0.0",  "beautifulsoup4==4.10.0", "lxml==4.7.1", "requests==2.27.1"],
+    install_requires=["click==8.0.3", "daiquiri==3.0.0",  "beautifulsoup4==4.10.0", "lxml==4.7.1", "requests==2.27.1", "snowballstemmer==2.2.0"],
     classifiers=["License :: OSI Approved :: Apache Software License",],
 )
 
