@@ -57,7 +57,6 @@ class Crawler:
                     index_text += " ".join([_.strip() for _ in element.strings])
 
             self._index_content[page.url] = index_text
-            # logger.info(f"{page.url}: {index_text}")
 
             if follow:
                 for link in page.links:
