@@ -26,10 +26,10 @@ logger = daiquiri.getLogger(__name__)
 
 class Crawler:
     def __init__(self, url: str):
-        self._url = url
-        self._visited = set()
-        self._url_parse = urlparse(self._url)
+        self._url_parse = urlparse(url)
+        self._url = url if self._url_parse.path != "" else url + "/"
         self._url_prefix = f"{self._url_parse.scheme}://{self._url_parse.netloc}"
+        self._visited = set()
         self._content = {}
 
     @property
@@ -54,7 +54,9 @@ class Crawler:
             for selector in selectors:
                 elements = soup.find_all(selector)
                 for element in elements:
-                    index_text += " ".join([_.strip() for _ in element.strings])
+                    new_text = " ".join([_.strip() for _ in element.strings])
+                    if new_text not in index_text:
+                        index_text += new_text
 
             self._content[page.url] = index_text
 
