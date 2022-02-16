@@ -30,11 +30,11 @@ class Crawler:
         self._visited = set()
         self._url_parse = urlparse(self._url)
         self._url_prefix = f"{self._url_parse.scheme}://{self._url_parse.netloc}"
-        self._index_content = {}
+        self._content = {}
 
     @property
-    def index_content(self):
-        return self._index_content
+    def content(self):
+        return self._content
 
     @property
     def visited(self):
@@ -56,7 +56,7 @@ class Crawler:
                 for element in elements:
                     index_text += " ".join([_.strip() for _ in element.strings])
 
-            self._index_content[page.url] = index_text
+            self._content[page.url] = index_text
 
             if follow:
                 for link in page.links:
