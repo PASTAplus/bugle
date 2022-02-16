@@ -15,11 +15,14 @@
 import json
 import logging
 import os
+import pickle
 
 import click
 import daiquiri
 
 from bugle.crawl.crawler import Crawler
+from bugle.index import load
+from bugle.index.index import Index
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 logfile = cwd + "/crawl.log"
@@ -35,26 +38,30 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("url", nargs=1, required=True)
-@click.argument("content", nargs=1, required=True)
+@click.argument("cache", nargs=1, required=True)
 @click.argument("selectors", nargs=-1, required=True)
 @click.option("-a", "--allow", default="*", help=allow_help)
 @click.option("-f", "--follow", is_flag=True, default=False, help=follow_help)
-def main(url: str, content: str, selectors: tuple, allow: str, follow: bool):
+def main(url: str, cache: str, selectors: tuple, allow: str, follow: bool):
     """
         Crawl a website
 
         \b
             URL: URL of website to crawl and index
-            CONTENT: File location of where to write crawled content
+            CACHE: Cache location to write crawled content and index
             SELECTORS: One or more space separated tags to define index content.
     """
     crawler = Crawler(url=url)
     crawler.crawl(selectors=selectors, allow=allow, follow=follow)
     logger.info(crawler.visited)
 
-    j = json.dumps(crawler.index_content, indent=2)
-    with open(content, "w") as f:
+    j = json.dumps(crawler.content, indent=2)
+    with open(f"{cache}/content.json", "w") as f:
         f.write(j)
+
+    index: Index = load.build_index(crawler.content)
+    with open(f"{cache}/index.pkl", "wb") as f:
+        pickle.dump(index, f)
 
     return 0
 
