@@ -16,4 +16,4 @@
 
 class Config:
     URL = ""
-    INDEX_CONTENT_CACHE = ""
+    CACHE = ""
