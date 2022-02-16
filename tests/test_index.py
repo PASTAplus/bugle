@@ -52,6 +52,10 @@ def test_search_index():
     assert len(hits) == 1
     hits = index.search("Etiquette Environmental", search_type="OR", rank=True)
     assert len(hits) == 4
+    hits = index.search(".")
+    assert len(hits) == 0
+    hits = index.search("the")
+    assert len(hits) == 0
 
 
 def test_pkl_search_index():
@@ -68,3 +72,7 @@ def test_pkl_search_index():
     assert len(hits) == 1
     hits = index.search("Etiquette Environmental", search_type="OR", rank=True)
     assert len(hits) == 4
+    hits = index.search(".")
+    assert len(hits) == 0
+    hits = index.search("the")
+    assert len(hits) == 0

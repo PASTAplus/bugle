@@ -59,6 +59,9 @@ class Index:
 
         analyzed_query = analyze(query)
         results = self._results(analyzed_query)
+        if len(results) == 0:
+            return []
+
         if search_type == 'AND':
             # all tokens must be in the document
             documents = [self.documents[doc_id] for doc_id in set.intersection(*results)]
