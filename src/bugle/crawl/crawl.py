@@ -52,7 +52,7 @@ def main(url: str, cache: str, selectors: tuple, allow: str, follow: bool):
             SELECTORS: One or more space separated tags to define index content.
     """
     crawler = Crawler(url=url)
-    crawler.crawl(selectors=selectors, allow=allow, follow=follow)
+    crawler.crawl(selectors=set(selectors), allow=allow, follow=follow)
     logger.info(crawler.visited)
 
     j = json.dumps(crawler.content, indent=2)
