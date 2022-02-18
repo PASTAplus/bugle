@@ -23,6 +23,7 @@ class WebPage:
     ID: int
     content: str
     url: str
+    title: str
 
     @property
     def fulltext(self):
