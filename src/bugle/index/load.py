@@ -32,7 +32,7 @@ def load_content(content_path: str) -> dict:
 def build_index(content: dict) -> Index:
     index = Index()
     for i, page_url in enumerate(content):
-        webpage = WebPage(ID=i, content=content[page_url], url=page_url)
+        webpage = WebPage(ID=i, content=content[page_url][1], url=page_url, title=content[page_url][0])
         index.index_document(webpage)
     return index
 
