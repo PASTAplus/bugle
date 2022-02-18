@@ -40,25 +40,29 @@ class Crawler:
     def visited(self):
         return self._visited
 
-    def crawl(self, selectors: tuple, url: str = None, allow: str = None, follow: bool = False):
+    def crawl(self, selectors: set, url: str = None, allow: str = None, follow: bool = False):
 
         url = self._url if url is None else url
 
         try:
             page = Page(url)
             self._visited.add(url)
+            selectors.add("title")
 
             soup = BeautifulSoup(page.html, "lxml")
 
             index_text = ""
+            title = ""
             for selector in selectors:
                 elements = soup.find_all(selector)
                 for element in elements:
                     new_text = " ".join([_.strip() for _ in element.strings])
-                    if new_text not in index_text:
+                    if selector == "title":
+                        title = new_text
+                    elif new_text not in index_text:
                         index_text += new_text
 
-            self._content[page.url] = index_text
+            self._content[page.url] = [title, index_text]
 
             if follow:
                 for link in page.links:
