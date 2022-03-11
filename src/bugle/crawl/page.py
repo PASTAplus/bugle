@@ -44,5 +44,7 @@ class Page:
     def _get_links(self):
         links = []
         for link in self._soup.find_all("a"):
-            links.append(link.get("href"))
+            l = link.get("href")
+            if "#" not in l:  # Ignore links with page anchors
+                links.append(l)
         return links
