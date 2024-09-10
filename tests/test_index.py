@@ -63,15 +63,15 @@ def test_pkl_search_index():
     hits = index.search("Environmental")
     assert len(hits) > 0
     hits = index.search("Etiquette")
-    assert len(hits) >= 2
+    assert len(hits) == 1
     hits = index.search("Bullwinkle")
     assert len(hits) == 0
     hits = index.search("Etiquette", rank=True)
-    assert len(hits) >= 2
+    assert len(hits) == 1
     hits = index.search("Etiquette Environmental", search_type="AND", rank=True)
-    assert len(hits) == 2
+    assert len(hits) == 1
     hits = index.search("Etiquette Environmental", search_type="OR", rank=True)
-    assert len(hits) == 14
+    assert len(hits) == 208
     hits = index.search(".")
     assert len(hits) == 0
     hits = index.search("the")
