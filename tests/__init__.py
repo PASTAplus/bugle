@@ -13,18 +13,16 @@
     2/6/22
 """
 import logging
-import os
+import pathlib
 import sys
 
 import daiquiri
 
-
-cwd = os.path.dirname(os.path.realpath(__file__))
-logfile = cwd + "/tests.log"
-daiquiri.setup(level=logging.INFO,
-               outputs=(daiquiri.output.File(logfile), "stdout",))
+cwd = pathlib.Path(__name__).parent.resolve()
+logfile = f"{cwd}/tests/tests.log"
+daiquiri.setup(
+    level=logging.INFO,
+    outputs=(daiquiri.output.File(logfile), "stdout",)
+)
 logger = daiquiri.getLogger(__name__)
-
-
-sys.path.insert(0, os.path.abspath("../src"))
-test_data_path = os.path.abspath(os.path.dirname(__file__)) + "/data"
+sys.path.insert(0, f"{cwd}/src")

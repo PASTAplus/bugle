@@ -12,8 +12,8 @@
 :Created:
     2/12/22
 """
-import datetime
 import json
+import pathlib
 
 import daiquiri
 
@@ -23,22 +23,23 @@ from bugle.index.index import Index
 
 
 logger = daiquiri.getLogger(__name__)
+cwd = pathlib.Path(__name__).parent.resolve()
 
 
 def test_load_content():
-    with open(f"data/content.json", "r") as f:
+    with open(cwd / "tests/data/content.json", "r") as f:
         content = json.loads(f.read())
     assert isinstance(content, dict)
 
 
 def test_index_webpage():
-    content = load.load_content(f"data/content.json")
+    content = load.load_content(f"{cwd}/tests/data/content.json")
     index: Index = load.build_index(content)
     assert isinstance(index, Index)
 
 
 def test_search_index():
-    content = load.load_content(f"data/content.json")
+    content = load.load_content(f"{cwd}/tests/data/content.json")
     index: Index = load.build_index(content)
     hits = index.search("Environmental")
     assert len(hits) > 0
