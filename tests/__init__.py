@@ -18,11 +18,15 @@ import sys
 
 import daiquiri
 
-cwd = pathlib.Path(__name__).parent.resolve()
-logfile = f"{cwd}/tests/tests.log"
+cwd = pathlib.Path(".").absolute()
+if cwd.parts[-1] != "tests":
+    cwd = cwd / "tests"
+print(cwd)
+print(cwd.parent)
+logfile = f"{cwd}/tests.log"
 daiquiri.setup(
     level=logging.INFO,
     outputs=(daiquiri.output.File(logfile), "stdout",)
 )
 logger = daiquiri.getLogger(__name__)
-sys.path.insert(0, f"{cwd}/src")
+sys.path.insert(0, f"{cwd.parent}/src")

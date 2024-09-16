@@ -16,6 +16,7 @@ import json
 import pathlib
 
 import daiquiri
+import pytest
 
 from bugle.config import Config
 import bugle.index.load as load
@@ -23,23 +24,30 @@ from bugle.index.index import Index
 
 
 logger = daiquiri.getLogger(__name__)
-cwd = pathlib.Path(__name__).parent.resolve()
 
 
-def test_load_content():
-    with open(cwd / "tests/data/content.json", "r") as f:
+@pytest.fixture
+def cwd():
+    cwd = pathlib.Path(".").absolute()
+    if cwd.parts[-1] != "tests":
+        cwd = cwd / "tests"
+    return str(cwd)
+
+
+def test_load_content(cwd):
+    with open(f"{cwd}/data/content.json", "r") as f:
         content = json.loads(f.read())
     assert isinstance(content, dict)
 
 
-def test_index_webpage():
-    content = load.load_content(f"{cwd}/tests/data/content.json")
+def test_index_webpage(cwd):
+    content = load.load_content(f"{cwd}/data/content.json")
     index: Index = load.build_index(content)
     assert isinstance(index, Index)
 
 
-def test_search_index():
-    content = load.load_content(f"{cwd}/tests/data/content.json")
+def test_search_index(cwd):
+    content = load.load_content(f"{cwd}/data/content.json")
     index: Index = load.build_index(content)
     hits = index.search("Environmental")
     assert len(hits) > 0
